@@ -1,0 +1,57 @@
+<!--
+  Generated template for the Controls page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Controls</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<div (mouseup)="MoveUpMouseUp()">
+	  <button ion-button (mousedown)="MoveUpMouseDown()" >
+	    Move Up
+	  </button>
+  </div>
+
+  <div (mouseup)="MoveDownMouseUp()">
+	  <button ion-button (mousedown)="MoveDownMouseDown()">
+	    Move Down
+	  </button>
+  </div>
+
+  <div class="item range">
+	  <i class="icon ion-ios-lightbulb-outline"></i>
+	  <input type="range" name="brightness" min="0" max="100" value="50" (input)="SetSliderBrightness($event)">
+	  <i class="icon ion-ios-lightbulb"></i>
+	</div>
+
+  <div class="item range red">
+	  <i class="icon ion-ios-lightbulb-outline"></i>
+	  <input type="range" name="ledr" min="0" max="100" value="50" (input)="SetLEDR($event)">
+	  <i class="icon ion-ios-lightbulb"></i>
+	</div>
+
+  <div class="item range green">
+	  <i class="icon ion-ios-lightbulb-outline"></i>
+	  <input type="range" name="ledg" min="0" max="100" value="50" (input)="SetLEDG($event)">
+	  <i class="icon ion-ios-lightbulb"></i>
+	</div>
+
+  <div class="item range blue">
+	  <i class="icon ion-ios-lightbulb-outline"></i>
+	  <input type="range" name="ledb" min="0" max="100" value="50" (input)="SetLEDB($event)">
+	  <i class="icon ion-ios-lightbulb"></i>
+	</div>
+
+	<canvas id="envelope" nx="envelope"></canvas>
+  <canvas id="waveform" nx="waveform"></canvas>
+
+</ion-content>
