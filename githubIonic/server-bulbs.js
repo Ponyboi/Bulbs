@@ -16,6 +16,7 @@ var express = require('express')
   , server = require('http').createServer(app)
   , device = require('express-device')
   , _ = require('lodash');
+  // , tone = require('tone');
 
 //net client setup
 const net = require('net');

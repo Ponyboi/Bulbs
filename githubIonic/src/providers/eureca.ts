@@ -24,7 +24,7 @@ export class EurecaClient {
   }
   ServerStatus() {
     this.eurecaServer.ServerStatus();
-  }
+  }screenWidth
 
   MoveUpMouseDown() {
   	console.log(this.eurecaServer);
@@ -44,5 +44,8 @@ export class EurecaClient {
   }
   SetLED(rgb) {
     this.eurecaServer.SetLED(1, rgb);
+  }
+  PlayPause(state) {
+    this.eurecaServer.PausePlay(state);
   }
 }

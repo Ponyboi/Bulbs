@@ -2554,6 +2554,8 @@
 
             this.scanIndex = 0
 
+            this.master = {};
+
             //define unique attributes
 
             /** @property {object}  val   
@@ -2621,7 +2623,7 @@
                 var drawingY = [];
 
                 for (var i = 0; i < this.val.points.length; i++) {
-                    drawingX[i] = (this.val.points[i].x * this.GUI.w / master.zoom) - pos;
+                    drawingX[i] = (this.val.points[i].x * this.GUI.w / this.master.zoom) - pos;
                     drawingY[i] = (1 - this.val.points[i].y) * this.GUI.h;
 
                     //stay within right/left bounds
@@ -2688,7 +2690,7 @@
             var actualY = (this.GUI.h - this.val.points[i].y);
             // var clippedX = math.clip(actualX / this.GUI.w, 0, 1);
             // var clippedY = math.clip(actualY / this.GUI.h, 0, 1);            
-            var clippedX = math.clip((actualX * master.zoom) / this.GUI.w, 0, 1000);
+            var clippedX = math.clip((actualX * this.master.zoom) / this.GUI.w, 0, 1000);
             var clippedY = math.clip(actualY / this.GUI.h, 0, 1000);
 
             this.val.points[i].x = math.prune(clippedX, 3);
@@ -2719,13 +2721,13 @@
         envelope.prototype.click = function() {
 
             // find nearest node and set this.selectedNode (index)
-            this.selectedNode = this.findNearestNode(((this.clickPos.x * master.zoom) + this.pos) / this.GUI.w, this.clickPos.y / this.GUI.h, this.val.points);
+            this.selectedNode = this.findNearestNode(((this.clickPos.x * this.master.zoom) + this.pos) / this.GUI.w, this.clickPos.y / this.GUI.h, this.val.points);
             this.selectedNodeColorOld = this.selectedNodeColor;
             this.selectedNodeColor = this.selectedNode;
-            if (master.colorPicker) {
-                console.log("color-picker-clidk", this.val.points[this.selectedNodeColor].hueRGB);
-                master.colorPicker.colorPicker.color.setColor(this.val.points[this.selectedNodeColor].hueRGB, 'rgb', 1);
-                master.colorPicker.colorPicker.render();
+            if (this.master.colorPicker) {
+                console.log("color-picker-clidk", this.val.points[this.selectedNodeColor].rgb);
+                this.master.colorPicker.colorPicker.color.setColor(this.val.points[this.selectedNodeColor].rgb, 'rgb', 1);
+                this.master.colorPicker.colorPicker.render();
             }
             console.log('clicked', this.val, this.clickPos.x, this.pos);
             this.transmit(this.val);
@@ -2836,7 +2838,7 @@
                     nearestIndex++
                 }
                 this.val.points.splice(nearestIndex, 0, {
-                        x: ((this.clickPos.x * master.zoom) + this.pos) / this.GUI.w,
+                        x: ((this.clickPos.x * this.master.zoom) + this.pos) / this.GUI.w,
                         y: (this.GUI.h - this.clickPos.y) / this.GUI.h
                     })
                     //nearestIndex++;
@@ -8560,6 +8562,7 @@
             /** @property {string}  mode  Mode of interaction. "edge" mode lets you drag each edge of the waveform individually. "area" mode (default) lets you drag the waveform as a whole (with parallel mouse movement) or scale the waveform as a whole (with transverse mouse movement) */
             this.mode = "area" // modes: "edge", "area"
             this.touchdown = new Object();
+            this.master = {};
             this.init();
         }
         util.inherits(waveform, widget);
@@ -8799,14 +8802,14 @@
 
             if (this.mode == "edge") {
                 if (this.firsttouch == "start") {
-                    this.val.start = this.clickPos.x / this.GUI.w;
+                    this.val.start = (this.clickPos.x + this.pos) / this.GUI.w;
                     if (this.clickPos.touches.length > 1) {
                         this.val.stop = this.clickPos.touches[1].x / this.GUI.w;
                     }
                 } else {
-                    this.val.stop = this.clickPos.x / this.GUI.w;
+                    this.val.stop = (this.clickPos.x + this.pos) / this.GUI.w;
                     if (this.clickPos.touches.length > 1) {
-                        this.val.start = this.clickPos.touches[1].x / this.GUI.w;
+                        this.val.start = (this.clickPos.touches[1].x + this.pos) / this.GUI.w;
                     }
                 }
 
@@ -8831,15 +8834,17 @@
                 var size = this.startval.size + movesize;
                 size = math.clip(size, 0.001, 1);
 
+                console.log("area pos",moveloc, this.pos, this.duration, this.master.zoom, (this.pos/((this.duration / this.master.zoom) * 1000)) * (this.duration / this.master.zoom));
+
                 this.val = {
-                    start: moveloc - size / 2,
-                    stop: moveloc + size / 2,
+                    start: (moveloc + (this.pos/((this.duration / this.master.zoom) * 1000)) * (this.duration / this.master.zoom)) - size / 2,
+                    stop: (moveloc + (this.pos/((this.duration / this.master.zoom) * 1000)) * (this.duration / this.master.zoom)) + size / 2,
                 }
 
             }
 
-            this.val.start = math.clip(this.val.start, 0, 1);
-            this.val.stop = math.clip(this.val.stop, 0, 1);
+            this.val.start = math.clip(this.val.start, 0, 1000);
+            this.val.stop = math.clip(this.val.stop, 0, 1000);
 
             this.val['size'] = math.clip(Math.abs(this.val.stop - this.val.start), 0, 1)
 

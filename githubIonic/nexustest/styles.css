@@ -42,11 +42,18 @@ body {
 	position: relative;
 	padding: .4rem 1rem;
 }
-.color-picker {
+.color-picker, 
+.current-color {
 	display: inline-block;
 	vertical-align: middle;
 	border: 1px solid #aaa;
 	border-radius: 0.2rem;
 	height: 2rem;
 	width: 2rem;
+}
+.switch {
+
+}
+.button {
+  display: inline-block;
 }

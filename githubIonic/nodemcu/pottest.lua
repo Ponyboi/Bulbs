@@ -150,6 +150,7 @@ function setPWMs(val)
   pwm.setduty(6, val)
   pwm.setduty(7, val)
   pwm.setduty(5, val)
+  pwm.setduty(8, b)
 end
 
 function setMotorUp(val)

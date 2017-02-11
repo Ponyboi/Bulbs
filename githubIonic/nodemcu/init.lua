@@ -26,7 +26,7 @@ function startup()
 
     -- otherwise, start up
     print('in startup')
-    dofile('pottest.lua')
+    dofile('ledsneak.lua')
     end
 
 tmr.alarm(0,1000,0,abortInit)
