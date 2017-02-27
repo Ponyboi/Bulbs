@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EurecaClient } from '../../providers/eureca';
-import { ColorPicker } from '../../models/colorpicker';
+// import { ColorPicker } from '../../models/colorpicker';
+import {ColorPickerDirective} from 'ct-angular2-color-picker/component'
 /*
   Generated class for the Controls page.
 
@@ -19,7 +20,7 @@ declare var instance: any;
 })
 export class ControlsPage {
 
-  constructor(public navCtrl: NavController, public eureca: EurecaClient) {}
+  constructor(public navCtrl: NavController, public eureca: EurecaClient, public colorPicker: ColorPickerDirective) {}
   ionViewDidLoad() {
     console.log('Hello ControlsPage Page');
     this.Init();
@@ -240,11 +241,11 @@ export class ControlsPage {
   Delete() {
     localStorage.setItem("data", JSON.stringify([]));
   }
-  GenerateColorPicker() {
-    var pickerObj = new ColorPicker(this);
-    var picker = $('.color-picker').colorPicker(pickerObj);
-    return picker;
-  }
+  // GenerateColorPicker() {
+  //   var pickerObj = new ColorPicker(this);
+  //   var picker = $('.color-picker').colorPicker(pickerObj);
+  //   return picker;
+  // }
 
   CanvasResize() {
     $( window ).load( function(){
@@ -294,7 +295,8 @@ export class ControlsPage {
     console.log('sampleGrouping', sampleGrouping);
     this.waveform.zoom = sampleGrouping;
     this.envelope.zoom = sampleGrouping;
-    this.master.colorPicker = this.GenerateColorPicker();
+    // this.master.colorPicker = this.GenerateColorPicker();
+    this.master.colorPicker = this.colorPicker;
     this.envelope.master = this.master;
     this.waveform.master = this.master;
     this.FullDraw();
